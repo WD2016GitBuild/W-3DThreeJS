@@ -1,0 +1,20 @@
+* {
+    margin:0px;
+    padding:0px;
+    outline:none;
+    list-style:none;
+    border:none;
+}
+
+div.w-hide {
+    display: none;
+}
+
+div#w-demo1 {
+    width:100px;
+    height: 100px;
+    position: absolute;
+    top:0px;
+    left:0px;
+    background-color:#e33;
+}

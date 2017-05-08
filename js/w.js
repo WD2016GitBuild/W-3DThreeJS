@@ -1,16 +1,83 @@
-var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-var renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
-var geometry = new THREE.CubeGeometry(1,1,1);
-var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
-var cube = new THREE.Mesh(geometry, material); scene.add(cube);
-camera.position.z = 5;
-function render() {
-    requestAnimationFrame(render);
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
-    renderer.render(scene, camera);
+var renderer;
+function initThree() {
+    width = document.getElementById('canvas-frame').clientWidth;
+    height = document.getElementById('canvas-frame').clientHeight;
+    renderer = new THREE.WebGLRenderer({
+        antialias : true
+    });
+    renderer.setSize(width, height);
+    document.getElementById('canvas-frame').appendChild(renderer.domElement);
+    renderer.setClearColor(0xFFFFFF, 1.0);
 }
-render();
+
+var camera;
+function initCamera() {
+    camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
+    camera.position.x = 0;
+    camera.position.y = 0;
+    camera.position.z = 600;
+    camera.up.x = 0;
+    camera.up.y = 1;
+    camera.up.z = 0;
+    camera.lookAt({
+        x : 0,
+        y : 0,
+        z : 0
+    });
+}
+
+var scene;
+function initScene() {
+    scene = new THREE.Scene();
+}
+
+var light;
+function initLight() {
+    light = new THREE.AmbientLight(0xFFFFFF);
+    light.position.set(100, 100, 200);
+    scene.add(light);
+    light = new THREE.PointLight(0x00FF00);
+    light.position.set(0, 0,300);
+    scene.add(light);
+}
+
+var cube;
+function initObject() {
+    var geometry = new THREE.CylinderGeometry( 100,150,400);
+    var material = new THREE.MeshLambertMaterial( { color:0xFFFF00} );
+    var mesh = new THREE.Mesh( geometry,material);
+    mesh.position = new THREE.Vector3(0,0,0);
+    scene.add(mesh);
+}
+
+function threeStart() {
+    initThree();
+    initCamera();
+    initScene();
+    initLight();
+    initObject();
+    animation();
+
+}
+function animation()
+{
+    //renderer.clear();
+    camera.position.x =camera.position.x +1;
+    renderer.render(scene, camera);
+    requestAnimationFrame(animation);
+}
+
+threeStart();
+
+var stats = new Stats();
+stats.setMode(1); // 0: fps, 1: ms
+// 将stats的界面对应左上角
+stats.domElement.style.position = 'absolute';
+stats.domElement.style.left = '0px';
+stats.domElement.style.top = '0px';
+document.body.appendChild( stats.domElement );
+setInterval( function () {
+    stats.begin();
+    // 你的每一帧的代码
+    stats.end();
+}, 1000 / 60 );
