@@ -59,25 +59,11 @@ function threeStart() {
     animation();
 
 }
-function animation()
-{
-    //renderer.clear();
-    camera.position.x =camera.position.x +1;
+function animation() {
+    renderer.clear();
+    camera.position.x = Math.random()*5;
     renderer.render(scene, camera);
     requestAnimationFrame(animation);
 }
 
 threeStart();
-
-var stats = new Stats();
-stats.setMode(1); // 0: fps, 1: ms
-// 将stats的界面对应左上角
-stats.domElement.style.position = 'absolute';
-stats.domElement.style.left = '0px';
-stats.domElement.style.top = '0px';
-document.body.appendChild( stats.domElement );
-setInterval( function () {
-    stats.begin();
-    // 你的每一帧的代码
-    stats.end();
-}, 1000 / 60 );
